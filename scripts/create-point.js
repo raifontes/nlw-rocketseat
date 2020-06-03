@@ -25,17 +25,23 @@ function getCities(event){
 
     //alterar o value do input escondido na label state para o nome do estado
     const indexOfSelectedState = event.target.selectedIndex
-    stateInput = event.target.options[indexOfSelectedState].text
+    stateInput.value = event.target.options[indexOfSelectedState].text
 
     //Caminho para o json do município
     const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufValue}/distritos`
+
+    //Reseta o campo cidades, caso o usuário selecione uma opção de estado e mude para outra
+    //o campo cidades será reiniciado
+    citySelect.innerHTML = "<option value> Selecione a Cidade </option>"
+    citySelect.disabled = true
+
 
     fetch(url)
     .then( res =>  res.json() )
     .then( cities => {
         //state é uma variável que recebe cada estado do array de states
         for(const city of cities){
-            citySelect.innerHTML += `<option value='${city.id}'> ${city.nome} </option> `
+            citySelect.innerHTML += `<option value="${city.id}"> ${city.nome} </option> `
         }
 
         citySelect.disabled = false
